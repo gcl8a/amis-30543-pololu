@@ -24,6 +24,36 @@ const uint8_t amisSlaveSelect = 4;
 
 AMIS30543 stepper;
 
+// Sends a pulse on the NXT/STEP pin to tell the driver to take
+// one step, and also delays to control the speed of the motor.
+void step()
+{
+  // The NXT/STEP minimum high pulse width is 2 microseconds.
+  digitalWrite(amisStepPin, HIGH);
+  delayMicroseconds(3);
+  digitalWrite(amisStepPin, LOW);
+  delayMicroseconds(3);
+
+  // The delay here controls the stepper motor's speed.  You can
+  // increase the delay to make the stepper motor go slower.  If
+  // you decrease the delay, the stepper motor will go fast, but
+  // there is a limit to how fast it can go before it starts
+  // missing steps.
+  delayMicroseconds(2000);
+}
+
+// Writes a high or low value to the direction pin to specify
+// what direction to turn the motor.
+void setDirection(bool dir)
+{
+  // The NXT/STEP pin must not change for at least 0.5
+  // microseconds before and after changing the DIR pin.
+  delayMicroseconds(1);
+  digitalWrite(amisDirPin, dir);
+  delayMicroseconds(1);
+}
+
+
 void setup()
 {
   SPI.begin();
@@ -75,31 +105,3 @@ void loop()
   delay(300);
 }
 
-// Sends a pulse on the NXT/STEP pin to tell the driver to take
-// one step, and also delays to control the speed of the motor.
-void step()
-{
-  // The NXT/STEP minimum high pulse width is 2 microseconds.
-  digitalWrite(amisStepPin, HIGH);
-  delayMicroseconds(3);
-  digitalWrite(amisStepPin, LOW);
-  delayMicroseconds(3);
-
-  // The delay here controls the stepper motor's speed.  You can
-  // increase the delay to make the stepper motor go slower.  If
-  // you decrease the delay, the stepper motor will go fast, but
-  // there is a limit to how fast it can go before it starts
-  // missing steps.
-  delayMicroseconds(2000);
-}
-
-// Writes a high or low value to the direction pin to specify
-// what direction to turn the motor.
-void setDirection(bool dir)
-{
-  // The NXT/STEP pin must not change for at least 0.5
-  // microseconds before and after changing the DIR pin.
-  delayMicroseconds(1);
-  digitalWrite(amisDirPin, dir);
-  delayMicroseconds(1);
-}
