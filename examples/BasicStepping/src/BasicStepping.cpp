@@ -39,7 +39,7 @@ void step()
   // you decrease the delay, the stepper motor will go fast, but
   // there is a limit to how fast it can go before it starts
   // missing steps.
-  delayMicroseconds(2000);
+  delayMicroseconds(100);
 }
 
 // Writes a high or low value to the direction pin to specify
@@ -73,20 +73,22 @@ void setup()
 
   // Set the current limit.  You should change the number here to
   // an appropriate value for your particular system.
-  stepper.setCurrentMilliamps(132);
+  stepper.setCurrentMilliamps(400);
 
   // Set the number of microsteps that correspond to one full step.
-  stepper.setStepMode(32);
+  stepper.setStepMode(16);
 
   // Enable the motor outputs.
   stepper.enableDriver();
+
+  while(true) step();
 }
 
 void loop()
 {
   // Step in the default direction 1000 times.
   setDirection(0);
-  for (unsigned int x = 0; x < 1000; x++)
+  for (unsigned int x = 0; x < 30000; x++)
   {
     step();
   }
